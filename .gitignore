@@ -1,0 +1,9 @@
+dist/
+node_modules
+.DS_Store
+*.log
+.netlify
+.eslintcache
+.development.env
+.env.development
+.vscode/settings.json
