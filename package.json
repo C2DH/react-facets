@@ -1,6 +1,6 @@
 {
   "name": "@c2dh/react-facets",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Filter facets for a JSON list",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
