@@ -144,27 +144,27 @@ const Dimension = ({
         isActive ? 'active': '',
         showMore ? 'expanded': ''
       ].join(' ')}>
-        {activeGroups.map((group) => (
+        {activeGroups.map((group, i) => (
           <DimensionGroupListItem
-            key={group.key}
+            key={group.key || i}
             isActive
             onRemove={(e) => onRemoveHandler(e, group)}
             onClick={(e) => onClickHandler(e, group)}
             group={group}
           />
         ))}
-        {topGroups.map((group) => (
+        {topGroups.map((group, i) => (
           <DimensionGroupListItem
-            key={group.key}
+            key={group.key || i}
             isActive={activeKeys.includes(group.key)}
             onRemove={(e) => onRemoveHandler(e, group)}
             onClick={(e) => onClickHandler(e, group)}
             group={group}
           />
         ))}
-        {showMore && restGroups.map((group) => (
+        {showMore && restGroups.map((group, i) => (
           <DimensionGroupListItem
-            key={group.key}
+            key={group.key  || i}
             isActive={activeKeys.includes(group.key)}
             onRemove={(e) => onRemoveHandler(e, group)}
             onClick={(e) => onClickHandler(e, group)}

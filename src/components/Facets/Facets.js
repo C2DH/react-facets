@@ -48,7 +48,8 @@ function useFacetsSelection(dimensions = []) {
     dims: dimensions.reduce((acc, d) => {
       acc[d.name] = {
         selected: [],
-        keys: []
+        keys: [],
+        values: {}, // object of { key: [...indices] }
       }
       return acc
     }, {})
@@ -72,6 +73,7 @@ function useFacetsSelection(dimensions = []) {
     }
     console.debug('[useFacetsSelection]', {name, key, indices, method})
     if (method === MethodFilter) {
+      _dims[name].values[key] = indices
       if (_dims[name].selected.length) {
         _dims[name].selected = _dims[name].selected.filter(d => indices.includes(d))
       } else {
@@ -87,10 +89,22 @@ function useFacetsSelection(dimensions = []) {
         _dims[name].keys.push(key)
       }
     } else if (method === MethodRemove) {
-      _dims[name].selected = _dims[name].selected.filter(d => !indices.includes(d))
+      delete _dims[name].values[key]
       const keyToRemove = _dims[name].keys.indexOf(key)
-      if(keyToRemove > -1) {
+      if (keyToRemove > -1) {
         _dims[name].keys.splice(keyToRemove, 1)
+      }
+      if (!_dims[name].keys.length) {
+        _dims[name].selected = []
+      } else if (_dims[name].keys.length === 1) {
+        _dims[name].selected = Object.values(_dims[name].values).reduce((acc, d) => d, [])
+      } else {
+        _dims[name].selected = Object.values(_dims[name].values).reduce((acc, values, i) => {
+          if (i === 0) {
+            return values
+          }
+          return acc.filter(d => !values.includes(d))
+        }, [])
       }
     } else if (method === MethodReset) {
       _dims[name].selected = []
