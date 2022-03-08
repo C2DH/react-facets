@@ -1,6 +1,7 @@
 import React from 'react'
 // import { storiesOf } from '@storybook/react'
 import Facets from '../components/Facets/Facets'
+import '../styles/stories/FacetsTemplate.css'
 
 export default {
   /* 👇 The title prop is optional.
@@ -20,14 +21,34 @@ export default {
 // })
 
 const Template = (args) => {
+  const [selected, setSelected] = React.useState(null)
+  const onFacetSelectHandler = (name, indices) => {
+    console.debug('[ArticleBilbiography] @onFacetClickHandler', name, indices)
+    // values and value
+    setSelected(indices)
+  }
+  const sortedItems = args.items.map((item, idx) => ({
+    ...item,
+    idx
+  }))
 
   return (
-    <>
-    <Facets {...args} />
-    {args.items.map((d,i) => (
-      <pre key={i}>{JSON.stringify(d, null, 2)}</pre>
-    ))}
-    </>
+    <div className="FacetsTemplate">
+      <Facets {...args} onSelect={onFacetSelectHandler}  />
+      <section>
+        {selected !== null && selected.join(',')}
+      <ul>
+        {sortedItems.map((d) => {
+          if (Array.isArray(selected) && selected.indexOf(d.idx) === -1) {
+            return null
+          }
+          return (
+            <pre key={d.idx}>{d.idx} {JSON.stringify(d)}</pre>
+          )
+        })}
+      </ul>
+      </section>
+    </div>
   )
 }
 
